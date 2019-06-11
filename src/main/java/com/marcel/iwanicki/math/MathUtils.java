@@ -18,38 +18,51 @@ public class MathUtils {
     public static int moduloPowerMinusOne(int a, int c) {
 
         List<Integer> Z = new ArrayList<Integer>();
-        for(int i=0; i<c; i++)
+        for (int i = 0; i < c; i++)
             Z.add(i);
 
-        for(int i=0; i<Z.size(); i++)
-            if(Z.get(i) * a % c == 1)
+        for (int i = 0; i < Z.size(); i++)
+            if (Z.get(i) * a % c == 1)
                 return Z.get(i);
 
         return 0;
     }
 
-    public static int solveCongruences(SimplifiedCongruence[] simplifiedCongruences) {
+    public static int solveCongruences(List<SimplifiedCongruence> simplifiedCongruences) {
+        int[] N = new int[simplifiedCongruences.size()];
+        int[] M = new int[simplifiedCongruences.size()];
 
-        int alpha1 = simplifiedCongruences[0].getAlpha();
-        int alpha2 = simplifiedCongruences[1].getAlpha();
 
-        int c1 = simplifiedCongruences[0].getC();
-        int c2 = simplifiedCongruences[1].getC();
+        //sprawdz warunek
+        for (int i = 0; i < simplifiedCongruences.size(); i++) {
+            for (int j = 0; j < simplifiedCongruences.size(); j++) {
+                if(i == j) continue;
 
-        //Sprawdz zalozenie
-        if(gcd(c1, c2) != 1) {
-            System.out.println("NWD(C1, C2) != 1, Nie mozna rozwiazac ukladu, zalozenie CToR nie spelnione!");
-            System.exit(-1);
+                if (gcd(simplifiedCongruences.get(i).getC(), simplifiedCongruences.get(j).getC()) != 1) {
+                    System.out.println("NWD(C1, C2, ...) != 1, Nie mozna rozwiazac ukladu, zalozenie CToR nie spelnione!");
+                    System.exit(-1);
+                }
+            }
         }
 
-        int n = c1 * c2;
-        int N1 = n/c1;
-        int N2 = n/c2;
+        //oblicz n
+        int n = 1;
+        for(int i=0; i<simplifiedCongruences.size(); i++)
+            n *= simplifiedCongruences.get(i).getC();
 
-        int M1 = moduloPowerMinusOne(N1, c1);
-        int M2 = moduloPowerMinusOne(N2, c2);
+        //oblicz N i M
+        for(int i=0; i<simplifiedCongruences.size(); i++) {
+            N[i] = n / simplifiedCongruences.get(i).getC();
+            M[i] = moduloPowerMinusOne(N[i], simplifiedCongruences.get(i).getC());
+        }
 
-        return (alpha1 * c2 * M1 + alpha2 * c1 * M2) % n;
+        //oblicz x
+        int result = 0;
+        for(int i=0; i<simplifiedCongruences.size(); i++) {
+            result += (simplifiedCongruences.get(i).getAlpha() * simplifiedCongruences.get(simplifiedCongruences.size() - 1 - i).getC() * M[i]);
+        }
+
+        return result % n;
+
     }
-
 }
