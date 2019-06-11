@@ -63,6 +63,14 @@ public class CongruenceIO {
     }
 
     public void printSolution() {
-        System.out.println("\nRozwiazanie: x = " + MathUtils.solveCongruences(simplifiedCongruences) + "(mod " + (simplifiedCongruences.get(0).getC() * simplifiedCongruences.get(1).getC()) + ")");
+        int n = 1;
+        for(int i=0; i<simplifiedCongruences.size(); i++)
+            n *= simplifiedCongruences.get(i).getC();
+
+        System.out.println("\nRozwiazanie: x = " + MathUtils.solveCongruences(simplifiedCongruences) + "(mod " + n + ")");
+    }
+
+    public int getCount() {
+        return count;
     }
 }

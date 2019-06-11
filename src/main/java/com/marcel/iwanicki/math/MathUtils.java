@@ -62,6 +62,12 @@ public class MathUtils {
             result += (simplifiedCongruences.get(i).getAlpha() * simplifiedCongruences.get(simplifiedCongruences.size() - 1 - i).getC() * M[i]);
         }
 
+        System.out.println("\nRozwiazano uklad kongruencji: ");
+        for(int i=0; i<simplifiedCongruences.size(); i++) {
+            System.out.println("N_" + i + " = " + N[i]);
+            System.out.println("M_" + i + " = " + M[i]);
+        }
+
         return result % n;
 
     }

@@ -7,8 +7,8 @@ public class Main {
     public static void main(String[] args) {
 
         CongruenceIO congruenceIO = CongruenceIO.getInstance();
-        congruenceIO.readEquation(0);
-        congruenceIO.readEquation(1);
+        for(int i=0; i<congruenceIO.getCount(); i++)
+            congruenceIO.readEquation(i);
 
         congruenceIO.printUnsimplifiedCongruences();
         congruenceIO.printSolution();
